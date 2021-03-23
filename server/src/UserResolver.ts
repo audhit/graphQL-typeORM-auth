@@ -7,7 +7,7 @@ import {
   Field,
   Ctx,
   UseMiddleware,
-  Int
+  Int,
 } from "type-graphql";
 import { hash, compare } from "bcryptjs";
 import { User } from "./entity/User";
@@ -20,8 +20,7 @@ import { verify } from "jsonwebtoken";
 
 @ObjectType()
 class LoginResponse {
-  @Field()
-  accessToken: string;
+  @Field() accessToken: string;
   @Field(() => User)
   user: User;
 }
@@ -37,7 +36,7 @@ export class UserResolver {
   @UseMiddleware(isAuth)
   bye(@Ctx() { payload }: MyContext) {
     console.log(payload);
-    return `your user id is: ${payload!.userId}`;
+    return `Your User-ID is: ${payload!.userId}`;
   }
 
   @Query(() => [User])
@@ -71,7 +70,10 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async revokeRefreshTokensForUser(@Arg("userId", () => Int) userId: number) {
+  async revokeRefreshTokensForUser(
+    @Arg("userId", () => Int)
+    userId: number
+  ) {
     await getConnection()
       .getRepository(User)
       .increment({ id: userId }, "tokenVersion", 1);
@@ -86,7 +88,6 @@ export class UserResolver {
     @Ctx() { res }: MyContext
   ): Promise<LoginResponse> {
     const user = await User.findOne({ where: { email } });
-
     if (!user) {
       throw new Error("could not find user");
     }
@@ -103,7 +104,7 @@ export class UserResolver {
 
     return {
       accessToken: createAccessToken(user),
-      user
+      user,
     };
   }
 
@@ -117,7 +118,7 @@ export class UserResolver {
     try {
       await User.insert({
         email,
-        password: hashedPassword
+        password: hashedPassword,
       });
     } catch (err) {
       console.log(err);

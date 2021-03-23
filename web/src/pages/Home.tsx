@@ -11,13 +11,13 @@ export const Home: React.FC<Props> = () => {
   }
 
   return (
-    <div>
-      <div>users:</div>
+    <div style={{margin: "15px"}}>
+      <h1 style={{display: "inline-block", padding: "15px"}}>All the Users Below:</h1>
       <ul>
         {data.users.map(x => {
           return (
             <li key={x.id}>
-              {x.email}, {x.id}
+              E-Mail: {x.email}, with userID: {x.id}
             </li>
           );
         })}

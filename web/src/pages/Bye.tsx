@@ -1,9 +1,8 @@
 import React from "react";
 import { useByeQuery } from "../generated/graphql";
 
-interface Props {}
 
-export const Bye: React.FC<Props> = () => {
+export const Bye: React.FC = () => {
   const { data, loading, error } = useByeQuery({
     fetchPolicy: "network-only"
   });
@@ -13,13 +12,12 @@ export const Bye: React.FC<Props> = () => {
   }
 
   if (error) {
-    console.log(error);
-    return <div>err</div>;
+    return <h1 style={{color: "tomato"}} className="wrapper">You are not Authorized to see this Page !!</h1>;
   }
 
   if (!data) {
-    return <div>no data</div>;
+    return <div className="wrapper">no data</div>;
   }
 
-  return <div>{data.bye}</div>;
+  return <h1 style={{color: "green"}} className="wrapper">{data.bye}</h1>;
 };

@@ -1,0 +1,31 @@
+body {
+    margin: 0 !important;
+}
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+.mt-2 {
+    margin-top: 20px;
+}
+.mt-1 {
+    margin-top: 10px;
+}
+.float-right {
+    float: right;
+}
+a, button {
+    color: white !important;
+    background-color: black;
+    display: inline-block;
+    padding: 5px 15px;
+    text-decoration: none;
+    border: none;
+}
+
+a:hover, button:hover {
+    background-color: blue;
+    cursor: pointer;
+}

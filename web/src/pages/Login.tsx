@@ -3,7 +3,6 @@ import { RouteComponentProps } from "react-router";
 import { useLoginMutation, MeDocument, MeQuery } from "../generated/graphql";
 import { setAccessToken } from "../accessToken";
 
-interface Props {}
 
 export const Login: React.FC<RouteComponentProps> = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -11,7 +10,8 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
   const [login] = useLoginMutation();
 
   return (
-    <form
+    <div className="wrapper">
+      <form
       onSubmit={async e => {
         e.preventDefault();
         console.log("form submitted");
@@ -52,7 +52,7 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
           }}
         />
       </div>
-      <div>
+      <div className="mt-1">
         <input
           type="password"
           value={password}
@@ -62,7 +62,8 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
           }}
         />
       </div>
-      <button type="submit">login</button>
+      <button className="mt-2 float-right" type="submit">login</button>
     </form>
+    </div>
   );
 };

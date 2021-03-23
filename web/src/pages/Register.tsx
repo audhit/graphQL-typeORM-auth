@@ -8,7 +8,8 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
   const [register] = useRegisterMutation();
 
   return (
-    <form
+    <div className="wrapper">
+         <form
       onSubmit={async e => {
         e.preventDefault();
         console.log("form submitted");
@@ -33,7 +34,7 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
           }}
         />
       </div>
-      <div>
+      <div className="mt-1">
         <input
           type="password"
           value={password}
@@ -43,7 +44,8 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
           }}
         />
       </div>
-      <button type="submit">register</button>
+      <button className="mt-2 float-right" type="submit">register</button>
     </form>
+    </div>
   );
 };

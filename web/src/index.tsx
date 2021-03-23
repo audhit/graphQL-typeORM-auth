@@ -3,15 +3,19 @@ import ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { getAccessToken, setAccessToken } from "./accessToken";
 import { App } from "./App";
-import { ApolloClient } from "apollo-client";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
-import { ApolloLink, Observable } from "apollo-link";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import jwtDecode from "jwt-decode";
-
+import {
+  ApolloClient,
+  InMemoryCache,
+  Observable,
+  ApolloLink,
+  HttpLink,
+} from "@apollo/client";
+import "./styles/global.css";
 const cache = new InMemoryCache({});
+let graphQL_Error_Msg = '';
 
 const requestLink = new ApolloLink(
   (operation, forward) =>
@@ -43,7 +47,7 @@ const requestLink = new ApolloLink(
     })
 );
 
-const client = new ApolloClient({
+const client :any = new ApolloClient({
   link: ApolloLink.from([
     new TokenRefreshLink({
       accessTokenField: "accessToken",
@@ -55,7 +59,7 @@ const client = new ApolloClient({
         }
 
         try {
-          const { exp } = jwtDecode(token);
+          const { exp } : any = jwtDecode(token);
           if (Date.now() >= exp * 1000) {
             return false;
           } else {
@@ -76,13 +80,17 @@ const client = new ApolloClient({
       },
       handleError: err => {
         console.warn("Your refresh token is invalid. Try to relogin");
-        console.error(err);
       }
     }),
     onError(({ graphQLErrors, networkError }) => {
-      console.log(graphQLErrors);
-      console.log(networkError);
-    }),
+      if (graphQLErrors) {
+        console.log(graphQLErrors[0].message);
+        graphQL_Error_Msg = graphQLErrors[0].message;
+      }
+      if (networkError) {
+        console.log(networkError);
+      }
+    }) as any,
     requestLink,
     new HttpLink({
       uri: "http://localhost:4000/graphql",
@@ -94,7 +102,7 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <App graphQL_Error_MSG={graphQL_Error_Msg} />
   </ApolloProvider>,
   document.getElementById("root")
 );
